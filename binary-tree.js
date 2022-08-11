@@ -235,7 +235,27 @@ const treeFactory = (returnArray) => {
     return height;
   }
 
-  return { build, insert, remove, find, levelOrder, inOrder, preOrder, postOrder, height }
+  const depth = (data) => {
+    let depth = 1;
+    const depthTraversal = (leaf, counter) => {
+      if (data === leaf.data) {
+        depth = counter;
+        return;
+      }
+      if (leaf.left) {
+        counter++;
+        depthTraversal(leaf.left, counter)
+      }
+      if (leaf.right) {
+        counter++
+        depthTraversal(leaf.right, counter);
+      }
+    }
+    depthTraversal(bianaryTree.root, 0)
+    return depth;
+  }
+
+  return { build, insert, remove, find, levelOrder, inOrder, preOrder, postOrder, height, depth }
 }
 
 module.exports = treeFactory;

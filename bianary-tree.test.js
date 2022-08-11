@@ -211,3 +211,11 @@ test('height works big', () => {
     6
   );
 });
+
+test('depth works big', () => {
+  const testTree = tree();
+  testTree.build([50,30,70,20,40,60,80,32,34,36,65,75,85]);
+  expect(testTree.depth(34)).toEqual(
+    5
+  );
+});
