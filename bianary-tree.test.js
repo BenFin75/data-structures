@@ -195,3 +195,19 @@ test('postOrder works', () => {
     [4,5,2,1,3]
   );
 });
+
+test('height works', () => {
+  const testTree = tree();
+  testTree.build([3,1,2,5,4]);
+  expect(testTree.height()).toEqual(
+    3
+  );
+});
+
+test('height works big', () => {
+  const testTree = tree();
+  testTree.build([50,30,70,20,40,60,80,32,34,36,65,75,85]);
+  expect(testTree.height()).toEqual(
+    6
+  );
+});
