@@ -212,10 +212,26 @@ test('height works big', () => {
   );
 });
 
+test('height works big right', () => {
+  const testTree = tree();
+  testTree.build([50,70,60,80,65,75,85]);
+  expect(testTree.height()).toEqual(
+    3
+  );
+});
+
 test('depth works big', () => {
   const testTree = tree();
   testTree.build([50,30,70,20,40,60,80,32,34,36,65,75,85]);
   expect(testTree.depth(34)).toEqual(
     5
+  );
+});
+
+test('isBalanced works big', () => {
+  const testTree = tree();
+  testTree.build([50,30,70,20,40,60,80,32,34,36,65,75,85,]);
+  expect(testTree.isBalanced()).toBe(
+    false
   );
 });

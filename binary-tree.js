@@ -214,7 +214,7 @@ const treeFactory = (returnArray) => {
     }
   }
 
-  const height = () => {
+  const height = (leaf = bianaryTree.root) => {
     let height = 1;
     const heightTraversal = (leaf, counter) => {
       if (leaf.left) {
@@ -231,7 +231,7 @@ const treeFactory = (returnArray) => {
         }
       }
     }
-    heightTraversal(bianaryTree.root, 0)
+    heightTraversal(leaf, 0)
     return height;
   }
 
@@ -255,7 +255,25 @@ const treeFactory = (returnArray) => {
     return depth;
   }
 
-  return { build, insert, remove, find, levelOrder, inOrder, preOrder, postOrder, height, depth }
+  const isBalanced = () => {
+    const leftHeight = height(bianaryTree.root.left);
+    const rightHeight = height(bianaryTree.root.right);
+
+    console.log(leftHeight);
+    console.log(rightHeight);
+
+    if (leftHeight === rightHeight - 1 || leftHeight === rightHeight + 1 || leftHeight === rightHeight) {
+      return true;
+    }
+    if (rightHeight === leftHeight - 1 || rightHeight === leftHeight + 1 || rightHeight === leftHeight) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  return { build, insert, remove, find, levelOrder, inOrder, preOrder, postOrder, height, depth, isBalanced }
 }
 
 module.exports = treeFactory;
