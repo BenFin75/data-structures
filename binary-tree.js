@@ -6,7 +6,7 @@ const node = (data) => {
   }
 };
 
-const treeFactory = (array) => {
+const treeFactory = (returnArray) => {
   const bianaryTree = {root: null};
 
   const build = (array) => {
@@ -24,18 +24,18 @@ const treeFactory = (array) => {
   const addLeaf = (data, leaf) => {
     newNode = node(data);
     if( newNode.data < leaf.data ) {
-      if ( !leaf.left ) {
+      if (!leaf.left) {
         leaf.left = newNode;
       }
-      else if ( leaf.left ) {
+      else if (leaf.left) {
         addLeaf(newNode.data, leaf.left);
       }
     }
     if( newNode.data > leaf.data ) {
-      if ( !leaf.right ) {
+      if (!leaf.right) {
         leaf.right = newNode;
       }
-      else if ( leaf.right ) {
+      else if (leaf.right) {
         addLeaf(newNode.data, leaf.right)
       }
     }
@@ -46,36 +46,177 @@ const treeFactory = (array) => {
     return bianaryTree;
   }
 
-  const postOrder = () => {
-
+  const remove = (data) => {
+    let parentNode;
+    let smallestChildNNode;
+    const findSmallest = (leaf) => {
+      if (!leaf.left) {
+        if (leaf.right) {
+          findSmallest(leaf.right);
+        }
+        else {
+          if (leaf.data < smallestChildNNode.data) {
+            smallestChildNNode = leaf;
+          }
+        }
+      }
+      else if (leaf.left.data < smallestChildNNode.data) {
+        smallestChildNNode = leaf.left;
+        findSmallest(leaf.left);
+      }
+      else if (leaf.left.data > smallestChildNNode.data) {
+        findSmallest(leaf.left);
+      }
+    }
+    const removeTraverse = (leaf) => { 
+      if (data < leaf.data) { //go left
+        parentNode = leaf;
+        removeTraverse(leaf.left)
+      }
+      if (data > leaf.data) { //go right
+        parentNode = leaf;
+        removeTraverse(leaf.right)
+      }
+      if (data === leaf.data) {
+        smallestChildNNode = leaf.right;
+        findSmallest(leaf.right);
+      }
+    }
+    removeTraverse(bianaryTree.root)
+    return {parentNode, smallestChildNNode}
   }
 
-  return { build, insert }
+  const find = (data) => {
+    let result = 'Not Found';
+    const findTraverse = (leaf) => { 
+      if (data === leaf.data) {
+        result = leaf;
+      }
+      else if (leaf.left && data < leaf.data) { //go left
+        findTraverse(leaf.left)
+      }
+      else if (leaf.right && data > leaf.data) { //go right
+        findTraverse(leaf.right)
+      }
+    }
+    findTraverse(bianaryTree.root)
+    return result;
+  }
+
+  const levelOrder = (funct) => {
+    const queue = [bianaryTree.root];
+    const buildQueue = (leaf) => {
+      if (leaf.left) {
+        queue.push(leaf.left)
+      }
+      if (leaf.right) {
+        queue.push(leaf.right);
+      }
+      if (queue[0]) {
+        buildResults();
+      }
+    }
+
+    const result = [];
+    const buildResults = () => {
+      queue.forEach(node => {
+        result.push(node.data);
+        queue.shift()
+        buildQueue(node);
+      })
+    }
+
+    buildResults()
+
+    
+    if (funct) {
+      return result.map(value => {
+        return funct(value);
+      })
+    }
+    else {
+      return result;
+    }
+  }
+
+  const inOrder = (funct) => {
+    const inOrderTraversal = (leaf) => {
+      const result = [];
+      if (leaf.left) {
+        result.push(...inOrderTraversal(leaf.left));
+      }
+      result.push(leaf.data)
+      if (leaf.right) {
+        result.push(...inOrderTraversal(leaf.right));
+      }
+      return result;
+    }
+    
+    returnArray = inOrderTraversal(bianaryTree.root);
+
+    if (funct) {
+      return returnArray.map(value => {
+        return funct(value);
+      })
+    }
+    else {
+      return returnArray;
+    }
+  }
+
+  const preOrder = (funct) => {
+    const preOrderTraverse = (leaf) => {
+      const result = [];
+      result.push(leaf.data)
+      if (leaf.left) {
+        result.push(...preOrderTraverse(leaf.left));
+      }
+      if (leaf.right) {
+        result.push(...preOrderTraverse(leaf.right));
+      }
+      return result;
+    }
+
+    returnArray = preOrderTraverse(bianaryTree.root);
+
+    if (funct) {
+      return returnArray.map(value => {
+        return funct(value);
+      })
+    }
+    else {
+      return returnArray;
+    }
+  }
+
+  const postOrder = (funct) => {
+    const postOrderTraverse = (leaf) => {
+      const result = [];
+      if (leaf.right) {
+        result.push(...postOrderTraverse(leaf.right));
+      }
+      if (leaf.left) {
+        result.push(...postOrderTraverse(leaf.left));
+      }
+      result.push(leaf.data)
+      return result;
+    }
+
+    returnArray = postOrderTraverse(bianaryTree.root);
+
+    if (funct) {
+      return returnArray.map(value => {
+        return funct(value);
+      })
+    }
+    else {
+      return returnArray;
+    }
+  }
+
+  // const height = ()
+
+  return { build, insert, remove, find, levelOrder, inOrder, preOrder, postOrder }
 }
 
 module.exports = treeFactory;
-
-
-
-// if( newNode.data < leaf.data ) {
-//   if ( leaf.left ? newNode.data > leaf.left.data : newNode.data > leaf.left  ) {
-//     newNode.left = leaf.left;
-//     leaf.left = newNode;
-//   }
-//   else if ( leaf.left ?  newNode.data < newNode.data < leaf.left.data : leaf.left ) {
-//     addLeaf(newNode.data, leaf.left);
-//   }
-// }
-// if( newNode.data > leaf.data ) {
-//   if ( leaf.right ? newNode.data > leaf.right.data : newNode.data > leaf.right ) {
-//     newNode.right = leaf.right;
-//     leaf.right = newNode;
-//   }
-//   else if ( leaf.left && newNode.data < leaf.left.data ) {
-//     addLeaf(newNode.data, leaf.left)
-//   }
-//   else if ( newNode.data > leaf.right.left ) {
-//     newNode.left = leaf.right.left;
-//     leaf.right.left = newNode;
-//   }
-// }
