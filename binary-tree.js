@@ -11,6 +11,10 @@ const treeFactory = (returnArray) => {
 
   const build = (array) => {
 
+    if (array.length === 0) {
+      return 'array cannot be empty'
+    }
+
     bianaryTree.root = node(array[0]);
     for (const index in array) {
       if (array[index] != array[0]) {
@@ -215,15 +219,15 @@ const treeFactory = (returnArray) => {
   }
 
   const height = (leaf = bianaryTree.root) => {
-    let height = 1;
+    let height = 0;
     const heightTraversal = (leaf, counter) => {
       if (leaf.left) {
-        counter++;
-        heightTraversal(leaf.left, counter)
+        let newCounter = counter + 1;
+        heightTraversal(leaf.left, newCounter);
       }
       if (leaf.right) {
-        counter++
-        heightTraversal(leaf.right, counter);
+        let newCounter = counter + 1;
+        heightTraversal(leaf.right, newCounter);
       }
       else {
         if (counter > height) {
@@ -259,9 +263,6 @@ const treeFactory = (returnArray) => {
     const leftHeight = height(bianaryTree.root.left);
     const rightHeight = height(bianaryTree.root.right);
 
-    console.log(leftHeight);
-    console.log(rightHeight);
-
     if (leftHeight === rightHeight - 1 || leftHeight === rightHeight + 1 || leftHeight === rightHeight) {
       return true;
     }
@@ -273,7 +274,16 @@ const treeFactory = (returnArray) => {
     }
   }
 
-  return { build, insert, remove, find, levelOrder, inOrder, preOrder, postOrder, height, depth, isBalanced }
+  const reBalance = () => {
+    const sortedArray = inOrder();
+    const middle = Math.round(sortedArray.length/2) - 1
+    const newRoot = sortedArray.splice(middle, 1);
+    sortedArray.unshift(...newRoot);
+    build(sortedArray);
+    return isBalanced();
+  }
+
+  return { build, insert, remove, find, levelOrder, inOrder, preOrder, postOrder, height, depth, isBalanced, reBalance }
 }
 
 module.exports = treeFactory;

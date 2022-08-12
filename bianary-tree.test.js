@@ -77,14 +77,6 @@ test('inserts correctly', () => {
   );
 });
 
-// test('remove works', () => {
-//   const testTree = tree();
-//   testTree.build([50,30,70,20,40,60,80,32,65,75,85,34,36]);
-//   expect(testTree.remove(50)).toEqual(
-    
-//   );
-// });
-
 test('remove works with root', () => {
   const testTree = tree();
   testTree.build([50,30,70,20,40,60,80,32,65,75,85,34,36]);
@@ -144,6 +136,15 @@ test('levelOrder works with function', () => {
   );
 });
 
+test('inOrder works', () => {
+  const testTree = tree();
+  testTree.build([3, 1, 2, 5, 4]);
+  expect(testTree.inOrder()).toEqual(
+    [1, 2, 3, 4, 5]
+  );
+});
+
+
 test('inOrder works big', () => {
   const testTree = tree();
   testTree.build([50,30,70,20,40,60,80,32,34,65,75,85]);
@@ -200,7 +201,7 @@ test('height works', () => {
   const testTree = tree();
   testTree.build([3,1,2,5,4]);
   expect(testTree.height()).toEqual(
-    3
+    2
   );
 });
 
@@ -208,15 +209,15 @@ test('height works big', () => {
   const testTree = tree();
   testTree.build([50,30,70,20,40,60,80,32,34,36,65,75,85]);
   expect(testTree.height()).toEqual(
-    6
+    5
   );
 });
 
-test('height works big right', () => {
+test('height works 0', () => {
   const testTree = tree();
-  testTree.build([50,70,60,80,65,75,85]);
+  testTree.build([50]);
   expect(testTree.height()).toEqual(
-    3
+    0
   );
 });
 
@@ -233,5 +234,13 @@ test('isBalanced works big', () => {
   testTree.build([50,30,70,20,40,60,80,32,34,36,65,75,85,]);
   expect(testTree.isBalanced()).toBe(
     false
+  );
+});
+
+test('reBalance works big', () => {
+  const testTree = tree();
+  testTree.build([50,30,70,20,40,60,80,32,34,36,65,75,85,]);
+  expect(testTree.reBalance()).toBe(
+    true
   );
 });
