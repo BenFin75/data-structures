@@ -52,23 +52,23 @@ const treeFactory = (returnArray) => {
 
   const remove = (data) => {
     let parentNode;
-    let smallestChildNNode;
+    let smallestChildNode;
     const findSmallest = (leaf) => {
       if (!leaf.left) {
         if (leaf.right) {
           findSmallest(leaf.right);
         }
         else {
-          if (leaf.data < smallestChildNNode.data) {
-            smallestChildNNode = leaf;
+          if (leaf.data < smallestChildNode.data) {
+            smallestChildNode = leaf;
           }
         }
       }
-      else if (leaf.left.data < smallestChildNNode.data) {
-        smallestChildNNode = leaf.left;
+      else if (leaf.left.data < smallestChildNode.data) {
+        smallestChildNode = leaf.left;
         findSmallest(leaf.left);
       }
-      else if (leaf.left.data > smallestChildNNode.data) {
+      else if (leaf.left.data > smallestChildNode.data) {
         findSmallest(leaf.left);
       }
     }
@@ -82,12 +82,30 @@ const treeFactory = (returnArray) => {
         removeTraverse(leaf.right)
       }
       if (data === leaf.data) {
-        smallestChildNNode = leaf.right;
-        findSmallest(leaf.right);
+        if (leaf.left || leaf.right) {
+          smallestChildNode = leaf.right;
+          findSmallest(leaf.right);
+          smallestNumber = smallestChildNode.data;
+          remove(smallestChildNode.data);
+          if (parentNode.left.data === data) {
+            parentNode.left.data = smallestNumber;
+          }
+          if (parentNode.right.data === data) {
+            parentNode.right.data = smallestNumber;
+          }
+        }
+        else {
+          if (parentNode.left.data === data) {
+            parentNode.left = null
+          }
+          if (parentNode.right.data === data) {
+            parentNode.right = null
+          }        
+        }
       }
     }
     removeTraverse(bianaryTree.root)
-    return {parentNode, smallestChildNNode}
+    return;
   }
 
   const find = (data) => {

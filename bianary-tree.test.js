@@ -77,7 +77,21 @@ test('inserts correctly', () => {
   );
 });
 
-test('remove works with root', () => {
+test('remove works big', () => {
+  const testTree = tree();
+  testTree.build([50,30,70,20,40,60,80,32,65,75,85,34,36]);
+  testTree.remove(70)
+  expect(testTree.inOrder()).toEqual(
+    [
+      20, 30, 32, 34, 36,
+      40, 50, 60, 65, 75,
+      80, 85
+    ]
+  );
+});
+
+
+test('find works with root', () => {
   const testTree = tree();
   testTree.build([50,30,70,20,40,60,80,32,65,75,85,34,36]);
   expect(testTree.find(50).data).toEqual(
@@ -85,7 +99,7 @@ test('remove works with root', () => {
   );
 });
 
-test('remove works left tree', () => {
+test('find works left tree', () => {
   const testTree = tree();
   testTree.build([50,30,70,20,40,60,80,32,65,75,85,34,36]);
   expect(testTree.find(20).data).toEqual(
@@ -93,7 +107,7 @@ test('remove works left tree', () => {
   );
 });
 
-test('remove works right tree', () => {
+test('find works right tree', () => {
   const testTree = tree();
   testTree.build([50,30,70,20,40,60,80,32,65,75,85,34,36]);
   expect(testTree.find(60).data).toEqual(
@@ -101,7 +115,7 @@ test('remove works right tree', () => {
   );
 });
 
-test('remove works not found', () => {
+test('find works not found', () => {
   const testTree = tree();
   testTree.build([50,30,70,20,40,60,80,32,65,75,85,34,36]);
   expect(testTree.find(4353453)).toEqual(
